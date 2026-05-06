@@ -2,8 +2,8 @@
 """
 parse_report.py — Extract structured fields from a Triage Report.
 
-The spectactic-debugger skill produces reports in a fixed markdown format
-(see skills/spectactic-debugger/references/triage-report-schema.md). This script
+The spectastic-debugger skill produces reports in a fixed markdown format
+(see skills/spectastic-debugger/references/triage-report-schema.md). This script
 parses one and emits a JSON object the eval grader can use to check assertions
 programmatically.
 

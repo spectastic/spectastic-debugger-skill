@@ -1,17 +1,17 @@
-# spectactic-debugger
+# spectastic-debugger
 
-A Claude Code skill (and eval harness) for debugging defects inside a spec-driven development workflow. Classifies bugs by layer (constitution / spec / plan / implementation / cross-spec) and proposes fixes at the highest layer that needed to change. Distributed as a Claude Code plugin: `/plugin install spectactic/spectactic-debugger-skill`.
+A Claude Code skill (and eval harness) for debugging defects inside a spec-driven development workflow. Classifies bugs by layer (constitution / spec / plan / implementation / cross-spec) and proposes fixes at the highest layer that needed to change. Distributed as a Claude Code plugin: `/plugin install spectastic/spectastic-debugger-skill`.
 
 ## Layout
 
 ```
-spectactic-debugger-skill/
+spectastic-debugger-skill/
 ├── README.md                                  # this file
 ├── HOW-TO-RUN.md                              # how to run the eval harness
 ├── .claude-plugin/
 │   └── plugin.json                            # plugin manifest
 ├── skills/
-│   └── spectactic-debugger/
+│   └── spectastic-debugger/
 │       ├── SKILL.md                           # the skill itself
 │       └── references/
 │           ├── triage-report-schema.md        # output format
@@ -58,16 +58,16 @@ See `HOW-TO-RUN.md` for the full skill-creator workflow.
 
 Short version:
 1. Open this folder in Claude Code.
-2. Invoke skill-creator with: *"Evaluate the skill at `skills/spectactic-debugger/` against the seven fixtures in `evals/fixtures/`. The eval prompts and ground truth are in each fixture's `eval_metadata.json`. Use `evals/grading/grade_report.py` to score each report programmatically."*
+2. Invoke skill-creator with: *"Evaluate the skill at `skills/spectastic-debugger/` against the seven fixtures in `evals/fixtures/`. The eval prompts and ground truth are in each fixture's `eval_metadata.json`. Use `evals/grading/grade_report.py` to score each report programmatically."*
 3. Review the eval-viewer output, leave qualitative feedback on the failure cases, iterate.
 
 ## Installation (as a Claude Code plugin)
 
 ```
-/plugin install spectactic/spectactic-debugger-skill
+/plugin install spectastic/spectastic-debugger-skill
 ```
 
-Or clone the repo and place `skills/spectactic-debugger/` in `~/.claude/skills/`.
+Or clone the repo and place `skills/spectastic-debugger/` in `~/.claude/skills/`.
 
 ## Related principles in the constitution
 

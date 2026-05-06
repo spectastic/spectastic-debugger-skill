@@ -1,9 +1,9 @@
 ---
-name: spectactic-debugger
+name: spectastic-debugger
 description: Use this skill when a user is debugging or triaging a failure (bug, defect, regression, crash, QA finding, incident, unexpected behavior) in a spec-driven development project. Trigger whenever the user shares or references `spec.md`, `plan.md`, `tasks.md`, or `constitution.md` alongside a failure, uses requirement IDs (FEAT-###, FREQ-###, NFR-###, AC-#, P#, TD-#), mentions SpecKit / `/speckit.*`, cites constitutional principles, or describes two specs touching one feature. Trigger on questions like "where does the fix belong?", "spec amendment or code fix?", "bug or scope drift?", "implementation gap or plan miss?". Trigger even when the user calls it "just a code bug" — classifying which layer (constitution, spec, plan, cross-spec contract, or implementation) owns the fix is the point. Do NOT trigger for: authoring a new spec; ordinary debugging, refactor, lint, or perf work with no SDD artifacts; OpenAPI, hardware, or vendor "specs" outside an SDD pipeline.
 ---
 
-# Spectactic Debugger
+# Spectastic Debugger
 
 You are a staff-level software engineer operating inside a spec-driven development workflow (SpecKit-style: `spec → plan → tasks → implement`, governed by a constitution). Specifications and plans are first-class artifacts; code is the generated last mile.
 

@@ -12,7 +12,7 @@ Designed for **Claude Code** (full skill-creator workflow with subagents). Notes
 
 Open this folder and tell Claude:
 
-> I want to evaluate the skill at `skills/spectactic-debugger/` using skill-creator. The eval set is in `evals/fixtures/` — there are seven fixtures, each with its own `eval_metadata.json` containing the prompt, ground truth, and assertions. The shared constitution is at `evals/shared/constitution.md`. After each test run produces a Triage Report, score it programmatically with `python3 evals/grading/grade_report.py <fixture-dir> <report.md>`. Run all seven fixtures, both with the skill and as baseline (no skill), aggregate results into a benchmark, and launch the eval viewer so I can review qualitative outputs.
+> I want to evaluate the skill at `skills/spectastic-debugger/` using skill-creator. The eval set is in `evals/fixtures/` — there are seven fixtures, each with its own `eval_metadata.json` containing the prompt, ground truth, and assertions. The shared constitution is at `evals/shared/constitution.md`. After each test run produces a Triage Report, score it programmatically with `python3 evals/grading/grade_report.py <fixture-dir> <report.md>`. Run all seven fixtures, both with the skill and as baseline (no skill), aggregate results into a benchmark, and launch the eval viewer so I can review qualitative outputs.
 
 skill-creator will then:
 1. Spawn one subagent per fixture with the skill loaded; one without (baseline).
@@ -52,7 +52,7 @@ A revision that improves these three without regressing the others is a good rev
 
 1. Run all 7 fixtures. Review benchmark.
 2. Read the failure cases in the viewer; leave specific feedback.
-3. Modify `skills/spectactic-debugger/SKILL.md` (or the references) based on feedback.
+3. Modify `skills/spectastic-debugger/SKILL.md` (or the references) based on feedback.
 4. Re-run; the `--previous-workspace` flag in skill-creator's viewer lets you compare iterations side-by-side.
 5. Stop when:
    - All canaries pass.
@@ -66,7 +66,7 @@ After the skill behavior is stable, run skill-creator's `run_loop.py` against th
 ```bash
 python -m scripts.run_loop \
   --eval-set <path-to-trigger-eval.json> \
-  --skill-path skills/spectactic-debugger \
+  --skill-path skills/spectastic-debugger \
   --model <model-id> \
   --max-iterations 5 \
   --verbose
