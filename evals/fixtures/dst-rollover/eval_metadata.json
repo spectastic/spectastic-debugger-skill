@@ -1,0 +1,23 @@
+{
+  "eval_id": 1,
+  "eval_name": "dst-rollover",
+  "prompt": "QA found a bug in our screen recorder: recording timestamps shift by 1 hour during US daylight saving transitions. Recordings around the spring-forward boundary on March 9 2026 show inconsistent start times when sorted in the gallery, and there's a filename collision risk in the DST gap hour. The relevant artifacts are in this fixture folder: spec at spec.md, plan at plan.md, implementation snippet at code.md, project constitution at ../../shared/constitution.md. Please debug as a staff engineer in our SDD workflow and produce a Triage Report.",
+  "ground_truth": {
+    "primary_gap": "spec",
+    "recommended_change_layer": "spec",
+    "regen_test_result": "Fail",
+    "scope_exposes_deferred": "no",
+    "hotfix_needed": "no",
+    "constitutional_implies": "no",
+    "rationale": "The spec never specified timezone or DST behavior for timestamps. Plan picked the obvious default (local time); code honored the plan. A clean regen would reproduce the bug. The canonical fix is a Recording Metadata spec amendment specifying timezone-stable behavior (UTC storage with local-time display). Contrast with codec-compat: timestamps are primarily a Recording Metadata concern in this project, so constitutional escalation would be over-engineering. A skill that proposes a new constitutional principle here is over-escalating — it should resolve at the spec layer where the gap actually lives."
+  },
+  "assertions": [
+    {"text": "Layer Classification → Primary gap is 'spec' (not 'implementation' — the code is faithfully implementing what was asked; not 'constitution' — over-escalation)."},
+    {"text": "Recommended Change → Layer is 'spec' (the Recording Metadata spec is the right home for the fix; constitutional escalation here would be over-engineering)."},
+    {"text": "Regeneration Test → Result is 'Fail' (current spec would lead an LLM to make the same choice)."},
+    {"text": "The diagnosis identifies the missing timezone/DST behavior in the spec, not as a code bug."},
+    {"text": "The proposed amendment specifies timezone-stable behavior (UTC storage, local display, or similar) for timestamps."},
+    {"text": "Constitutional Check → Implies project-wide invariant is 'no' (this is feature-local, not class-wide; contrast with codec-compat)."},
+    {"text": "Cited requirement IDs (e.g. MREQ-001, MREQ-002) actually exist in spec.md."}
+  ]
+}

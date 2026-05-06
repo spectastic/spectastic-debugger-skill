@@ -1,0 +1,19 @@
+.DS_Store
+__pycache__/
+*.pyc
+
+# Claude Code session config (not the plugin manifest at .claude-plugin/)
+.claude/
+
+# Iteration workspace — large, intermediate, regenerable
+workspace/
+
+# Local skill-creator copy (vendored for cwd-stability fix; not ours to ship)
+workspace/skill-creator-local/
+
+# Description optimizer outputs
+workspace/desc-opt/
+
+# Eval viewer logs
+/tmp/eval-viewer*.log
+/tmp/desc-opt*.log

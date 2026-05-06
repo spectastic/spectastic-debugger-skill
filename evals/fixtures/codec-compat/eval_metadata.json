@@ -1,0 +1,25 @@
+{
+  "eval_id": 0,
+  "eval_name": "codec-compat",
+  "prompt": "Bug in our screen recorder: when users finish recording, the .mov file plays fine in QuickTime on the dev machine (M1 MacBook Pro), but fails to play in our team's standard corporate-locked-down VLC build, and Windows team members can't open it at all. Tested across the team — fails consistently for anyone not on macOS with QuickTime. The relevant artifacts are in this fixture folder: spec at spec.md, plan at plan.md, implementation snippet at code.md, project constitution at ../../shared/constitution.md. Please debug as a staff engineer in our SDD workflow and produce a Triage Report.",
+  "ground_truth": {
+    "primary_gap": "constitution",
+    "recommended_change_layer": "constitution",
+    "regen_test_result": "Fail",
+    "scope_exposes_deferred": "no",
+    "hotfix_needed": "no",
+    "constitutional_implies": "yes",
+    "cross_spec_contracts": "none",
+    "rationale": "Codec portability is a class-of-risk that hits every output-producing feature in the project (recordings, screenshots, future exports, share/upload). Per the gap-taxonomy (\"the same class of bug could plausibly recur across multiple features\"), the canonical fix is a new constitutional principle on output portability. The Capture Engine spec amendment is a downstream cascade, not the primary fix. A skill that lands on 'spec' alone is under-escalating — it leaves the same trap waiting for the next output-producing feature."
+  },
+  "assertions": [
+    {"text": "Layer Classification → Primary gap is 'constitution' (the bug-class recurs across every output-producing feature; spec amendment is a cascade, not the primary fix)."},
+    {"text": "Recommended Change → Layer is 'constitution' (new principle on output portability)."},
+    {"text": "Regeneration Test → Result is 'Fail' (current artifacts would reproduce the bug)."},
+    {"text": "The diagnosis identifies a missing portability/environment-compatibility invariant that applies project-wide, not just to this feature."},
+    {"text": "Constitutional Check → Implies project-wide invariant is 'yes' with a proposed amendment about output portability."},
+    {"text": "Scope Check → Exposes deferred functionality is 'no' (the deferred multi-codec items are NOT being silently promoted)."},
+    {"text": "The proposed fix is NOT a code-only patch (e.g. swap to H.264 in Swift) without an upstream amendment."},
+    {"text": "Cited requirement IDs (e.g. FREQ-003, NFR-001) actually exist in spec.md — no hallucinated IDs."}
+  ]
+}

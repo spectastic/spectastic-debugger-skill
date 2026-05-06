@@ -1,0 +1,24 @@
+{
+  "eval_id": 6,
+  "eval_name": "hotfix-needed",
+  "prompt": "Production incident in our screen recorder: app crashes on launch when users click Record on machines with no audio input device (mac minis, VMs, headless build agents). Stack trace shows nil unwrap in AudioCapture.swift line 8. Estimated 12-18% of active users affected. Sales/CS escalating from enterprise customers in real time — need this fixed today. Please debug as a staff engineer in our SDD workflow. The relevant artifacts are in this fixture folder: spec at spec.md, plan at plan.md, implementation snippet at code.md, project constitution at ../../shared/constitution.md. Produce a Triage Report.",
+  "ground_truth": {
+    "primary_gap": "implementation",
+    "recommended_change_layer": "implementation",
+    "regen_test_result": "Pass",
+    "scope_exposes_deferred": "no",
+    "hotfix_needed": "yes",
+    "constitutional_implies": "maybe",
+    "rationale": "Spec is correct (AREQ-001/002/003 all require graceful handling). Plan is correct (TD-1 explicitly says nil should not block recording). Code violated the plan with a force-unwrap. This is an implementation gap. BUT production is down — a code hotfix is justified immediately. Per Constitution P3, the hotfix is fine but a structural fix must be queued in the same response: regression test (per P6), and possibly a constitutional principle about defensive hardware probing if other features are at risk (audio is one example; cameras, displays, storage devices could have the same issue)."
+  },
+  "assertions": [
+    {"text": "Layer Classification → Primary gap is 'implementation' (NOT 'spec' or 'plan' — both correctly forbid this)."},
+    {"text": "Recommended Change → Layer is 'implementation' for the immediate fix."},
+    {"text": "Regeneration Test → Result is 'Pass' (current spec+plan would NOT reproduce the bug)."},
+    {"text": "Tactical vs Structural → Hotfix needed first is 'yes' with reasoning about production impact."},
+    {"text": "Tactical vs Structural → Structural fix is queued (not just the hotfix). Includes at minimum a regression test per Constitution P6."},
+    {"text": "The proposed hotfix is concrete (replace force-unwrap with guard/if-let, fall back to video-only)."},
+    {"text": "Cited requirement IDs (e.g. AREQ-003, P3, P6) actually exist in the artifacts."},
+    {"text": "The skill identifies this as a violation of the plan's TD-1, not a spec gap."}
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "eval_id": 3,
+  "eval_name": "off-by-one",
+  "prompt": "Bug in our screen recorder: the recording timer in the UI displays 59 seconds when 60 seconds have actually elapsed. It's consistently 1 second behind throughout the recording. The relevant artifacts are in this fixture folder: spec at spec.md, plan at plan.md, implementation snippet at code.md, project constitution at ../../shared/constitution.md. Please debug as a staff engineer in our SDD workflow and produce a Triage Report.",
+  "ground_truth": {
+    "primary_gap": "implementation",
+    "recommended_change_layer": "implementation",
+    "regen_test_result": "Pass",
+    "scope_exposes_deferred": "no",
+    "hotfix_needed": "no",
+    "constitutional_implies": "no",
+    "rationale": "Spec is correct (TREQ-001/002/003 cover the intended behavior). Plan is correct (TD-2's algorithm is right). Code has a stray '- 1' in the seconds computation in format(). Regen from current spec+plan would NOT reproduce this bug — an LLM regenerating the formatter from TD-2 would write the correct algorithm. This is a textbook implementation gap. Per constitution P6, fix lands with a regression test."
+  },
+  "assertions": [
+    {"text": "Layer Classification → Primary gap is 'implementation' (NOT 'spec' or 'plan')."},
+    {"text": "Recommended Change → Layer is 'implementation'."},
+    {"text": "Regeneration Test → Result is 'Pass' (current spec+plan would NOT reproduce the bug)."},
+    {"text": "The diagnosis identifies the stray '- 1' in the format() function specifically."},
+    {"text": "The proposed fix is a code change, with a regression test (per Constitution P6)."},
+    {"text": "The skill does NOT propose any spec amendment, plan amendment, or constitutional amendment for this case."},
+    {"text": "Constitutional Check → Implies project-wide invariant is 'no'."},
+    {"text": "Cited requirement IDs (e.g. TREQ-001) actually exist in spec.md."}
+  ]
+}

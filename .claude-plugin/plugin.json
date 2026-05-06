@@ -1,0 +1,7 @@
+{
+  "name": "spectactic-debugger",
+  "description": "Staff-engineer-style debugger for spec-driven development projects (SpecKit-style: constitution / spec / plan / tasks / implement). Triages defects to the highest layer that needed to change and produces a structured Triage Report. Trigger on bug reports that mention spec.md / plan.md / constitution.md, requirement IDs (FREQ-, NFR-, AC-, P-, TD-), /speckit.* commands, or questions about which layer a fix belongs to.",
+  "author": {
+    "name": "spectactic"
+  }
+}

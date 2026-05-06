@@ -1,0 +1,24 @@
+{
+  "eval_id": 4,
+  "eval_name": "ui-capture-format-mismatch",
+  "prompt": "Bug in our screen recorder: users select 'MP4 (H.264)' from the codec dropdown in the recorder UI, but the resulting file is always a .mov with ProRes encoding regardless of selection. The dropdown selection persists correctly across launches, but the actual output ignores it. Two specs touch this feature: spec-capture.md (FEAT-002 capture engine) and spec-ui.md (FEAT-005 recorder UI). Plan and code for both at code.md (combined). Project constitution at ../../shared/constitution.md. Please debug as a staff engineer in our SDD workflow and produce a Triage Report.",
+  "ground_truth": {
+    "primary_gap": "cross-spec",
+    "recommended_change_layer": ["spec", "constitution"],
+    "regen_test_result": "Fail",
+    "scope_exposes_deferred": "yes_carefully",
+    "hotfix_needed": "no",
+    "constitutional_implies": "yes",
+    "rationale": "Two specs disagree on a shared contract. Capture spec (FREQ-003) says ProRes-only for MVP, with H.264/H.265 explicitly deferred. UI spec (UREQ-002) offers all three as active P0 items. Neither spec is wrong in isolation, but together they're inconsistent — and the UI spec is silently advertising deferred functionality. The right fix is NOT to make capture support H.264 (that's silent scope expansion of deferred items). It's to bring the UI spec in line with active capture scope: either restrict the dropdown to ProRes for MVP, or surface as scope question and explicitly promote the deferred capture items together. Constitution P4 already covers cross-spec contracts in the abstract; the codec list specifically can legitimately be lifted to either (a) a shared spec section both specs reference, or (b) a more concrete constitutional principle about codec/format vocabularies. Both options honor existing P4 — this is the rare case of genuine engineering disjunction, hence recommended_change_layer is a list."
+  },
+  "assertions": [
+    {"text": "Layer Classification → Primary gap is 'cross-spec' (or 'spec' with cross-spec drift explicitly identified)."},
+    {"text": "Recommended Change → Layer is 'spec' OR 'constitution' (both are legitimate homes for the codec contract; this is genuine engineering ambiguity, not grader hedging)."},
+    {"text": "Cross-Spec Impact → Shared contracts touched is non-empty (codec list / supported formats)."},
+    {"text": "The diagnosis identifies that UI spec UREQ-002 advertises codecs that capture spec defers (FREQ-004, FREQ-005)."},
+    {"text": "The proposed fix does NOT silently promote deferred capture requirements (FREQ-004, FREQ-005) to active scope."},
+    {"text": "The proposed fix either restricts UI scope to match capture, OR surfaces a scope question to promote deferred items in both specs together."},
+    {"text": "Constitutional Check → Mentions Constitution P4 (cross-spec contracts) or proposes amendment about shared codec contracts."},
+    {"text": "Cited requirement IDs (e.g. FREQ-003, UREQ-002) actually exist in the artifacts."}
+  ]
+}

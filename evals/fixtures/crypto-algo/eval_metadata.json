@@ -1,0 +1,23 @@
+{
+  "eval_id": 2,
+  "eval_name": "crypto-algo",
+  "prompt": "Compliance audit failure on our screen recorder: our settings store uses SQLCipher for encryption at rest, but the auditor flagged that we're using AES-256-CBC (SQLCipher's default), while our NFR and project constitution explicitly require AES-256-GCM (FIPS-140-2 validated). The relevant artifacts are in this fixture folder: spec at spec.md, plan at plan.md, implementation snippet at code.md, project constitution at ../../shared/constitution.md. Please debug as a staff engineer in our SDD workflow and produce a Triage Report.",
+  "ground_truth": {
+    "primary_gap": "plan",
+    "recommended_change_layer": "plan",
+    "regen_test_result": "Fail",
+    "scope_exposes_deferred": "no",
+    "hotfix_needed": "no",
+    "constitutional_implies": "no",
+    "rationale": "The spec NFR (SNFR-001) and constitution P1 are both correct and explicit. The plan's TD-1 chose SQLCipher and TD-4 used its defaults — which violate the existing NFR. Code faithfully implements the plan. The leak is the plan: a technical decision that contradicts an existing constraint. The fix is to amend the plan with a different storage choice that supports AES-256-GCM."
+  },
+  "assertions": [
+    {"text": "Layer Classification → Primary gap is 'plan' (not 'spec' — spec is correct)."},
+    {"text": "Recommended Change → Layer is 'plan'."},
+    {"text": "Regeneration Test → Result is 'Fail' (current plan would lead an LLM to make the same wrong technical choice)."},
+    {"text": "The diagnosis identifies the plan's TD-1 / TD-4 SQLCipher decision as the source, not the spec NFR."},
+    {"text": "Constitutional Check → Implies project-wide invariant is 'no' (P1 already covers this — the issue is plan compliance, not a missing principle)."},
+    {"text": "The proposed fix is a plan amendment (different storage choice or SQLCipher GCM upgrade), NOT a spec amendment relaxing the NFR."},
+    {"text": "Cited requirement IDs (e.g. SNFR-001, P1) actually exist in the artifacts."}
+  ]
+}
