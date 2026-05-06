@@ -1,6 +1,36 @@
 # spectastic-debugger
 
-A Claude Code skill (and eval harness) for debugging defects inside a spec-driven development workflow. Classifies bugs by layer (constitution / spec / plan / implementation / cross-spec) and proposes fixes at the highest layer that needed to change. Distributed as a Claude Code plugin: `/plugin install spectastic/spectastic-debugger-skill`.
+A Claude Code skill (and eval harness) for debugging defects inside a spec-driven development workflow. Classifies bugs by layer (constitution / spec / plan / implementation / cross-spec) and proposes fixes at the highest layer that needed to change.
+
+## Install
+
+**Recommended — via the spectastic marketplace** (one marketplace, many spec-driven-development plugins):
+
+```
+/plugin marketplace add spectastic/marketplace
+/plugin install spectastic-debugger
+```
+
+After the marketplace is added once, future plugins from spectastic install by name.
+
+**Or direct from this repo:**
+
+```
+/plugin install spectastic/spectastic-debugger-skill
+```
+
+**Or manual:** clone the repo and copy `skills/spectastic-debugger/` into `~/.claude/skills/`.
+
+## What it triggers on
+
+The skill fires automatically when you describe a bug, defect, regression, or audit failure in a spec-driven project — even without saying "SDD" or "SpecKit". Strong implicit signals:
+
+- Filenames like `spec.md`, `plan.md`, `tasks.md`, `constitution.md` mentioned alongside a failure.
+- Requirement-shaped IDs in the prompt (e.g. `FREQ-003`, `NFR-001`, `AC-2`, `P1`, `TD-4`).
+- Mentions of `/speckit.plan`, `/speckit.tasks`, `/speckit.implement`, deferred requirements, the regeneration test.
+- Questions like "is this a spec issue or a code bug?", "where does the fix belong?", "does this need a new constitutional principle?", "are we silently expanding scope?"
+
+It produces a structured Triage Report classifying the gap (constitution / spec / plan / cross-spec / implementation) and proposing the fix at the highest layer that needed to change. See [`skills/spectastic-debugger/references/triage-report-schema.md`](skills/spectastic-debugger/references/triage-report-schema.md) for the exact format.
 
 ## Layout
 
@@ -60,14 +90,6 @@ Short version:
 1. Open this folder in Claude Code.
 2. Invoke skill-creator with: *"Evaluate the skill at `skills/spectastic-debugger/` against the seven fixtures in `evals/fixtures/`. The eval prompts and ground truth are in each fixture's `eval_metadata.json`. Use `evals/grading/grade_report.py` to score each report programmatically."*
 3. Review the eval-viewer output, leave qualitative feedback on the failure cases, iterate.
-
-## Installation (as a Claude Code plugin)
-
-```
-/plugin install spectastic/spectastic-debugger-skill
-```
-
-Or clone the repo and place `skills/spectastic-debugger/` in `~/.claude/skills/`.
 
 ## Related principles in the constitution
 
