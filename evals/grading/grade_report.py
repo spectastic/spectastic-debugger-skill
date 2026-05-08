@@ -154,9 +154,13 @@ def grade(fixture_dir: Path, report_path: Path) -> dict:
     expected_cross = ground_truth.get("cross_spec_contracts")
     if expected_cross == "none":
         actual = (parsed.get("cross_spec_contracts") or "").lower()
+        # startswith() so reports that follow a `none` answer with explanatory
+        # prose (e.g. "none. no shared contract is in dispute") still grade
+        # against the boolean — mirrors how scope/hotfix/constitutional fields
+        # already grade.
         expectations.append(check(
-            "Cross-Spec Impact → Shared contracts touched is 'none' (no spurious cross-spec claim)",
-            actual in {"none", ""},
+            "Cross-Spec Impact → Shared contracts touched starts with 'none' (no spurious cross-spec claim)",
+            actual.startswith("none") or actual == "",
             f"got: {actual!r}"
         ))
     elif expected_cross is None and ground_truth.get("primary_gap") == "cross-spec":

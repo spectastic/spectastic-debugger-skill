@@ -38,7 +38,11 @@ def extract_field(section: str | None, field: str) -> str | None:
     if not section:
         return None
     cleaned = section.replace("**", "")
-    pattern = rf"^[-*]\s*{re.escape(field)}\s*:\s*(.+?)$"
+    # Leading \s* tolerates indented bullets — e.g., a `- Layer:` nested under a
+    # numbered "track" item in a paired-track Recommended Change. The first match
+    # wins, which corresponds to the primary/canonical track when the report
+    # presents tracks in priority order.
+    pattern = rf"^\s*[-*]\s*{re.escape(field)}\s*:\s*(.+?)$"
     m = re.search(pattern, cleaned, re.MULTILINE)
     if not m:
         return None
