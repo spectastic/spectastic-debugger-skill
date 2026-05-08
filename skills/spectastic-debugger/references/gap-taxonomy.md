@@ -101,3 +101,31 @@ Sometimes a "bug" is actually a feature request for deferred functionality. Mark
 - The current spec, as written, is being honored correctly — the user just wants different requirements.
 
 This is **not** a bug. Surface it via the Scope Check section as a scope question. Do NOT silently promote deferred items.
+
+## Platform Defect (Upstream of Project)
+
+A defect that reproduces *outside* the project's code — via the platform vendor's own first-party tools, an unmodified vendor sample-code consumer of the same API, or a sibling consumer API on the same platform. The bug is upstream of every API surface the project touches; no in-stack configuration knob can route around it.
+
+This case does not introduce a sixth `primary_gap` enum value. It is a recognition pattern that routes to one of the existing layers — typically `constitution` (for the structural protocol) or `spec` (for the immediate cascade).
+
+**Markers:**
+
+- The regeneration test paradoxically *passes* — regenerating spec → plan → code from current artifacts would NOT reproduce the bug, because the bug is not in the project's code.
+- The same defect is reproducible via the platform vendor's first-party tooling, the OS-level system shortcut for the operation, an unmodified vendor sample-code consumer, OR a sibling consumer API on the same platform.
+- The project is bound (by spec NFR or constitutional principle) to the platform — a non-platform fallback is forbidden.
+
+**Examples:**
+
+- macOS WindowServer's compositor renders a system material with visual artifacts; the same artifacts appear via `screencapture(1)`, `Cmd-Shift-3`, and an unmodified Apple SCStream sample.
+- An iOS audio framework drops a left channel on multichannel sources; the same drop reproduces in QuickTime, Safari, and a bare `AVAudioEngine` sample.
+- A browser engine miscomputes a CSS subpixel offset; the same defect reproduces in a bare HTML page outside the app, in two other apps using the same engine.
+
+**Disambiguation against Implementation Gap.** If the bug is observable with no project code in the loop, it is *not* an implementation gap regardless of the regen-test result. The regen test is necessary but not sufficient — also ask: "could this bug have originated outside any layer the project owns?" If yes, this section applies, not Implementation.
+
+**Canonical disposition (paired tracks):**
+
+1. **Spec-level cascade (immediate).** Document the limitation in release notes for the affected version. `Recommended Change → Layer: spec`, `Change type: release-notes entry`. Cite the affected feature and the user-trust expectation that is silently broken.
+2. **External-tracker filing (this cycle).** File the platform vendor's bug tracker (Apple Feedback Assistant, Chromium Issues, etc.) before the version ships. `Change type: external-tracker filing`. Capture the tracker ID back into the release notes when filed.
+3. **Structural fix (separate amendment cycle).** Propose a constitutional principle establishing the protocol for platform defects — file the tracker, document as known limitation, refuse to mask with synthetic output, refuse a non-platform fallback (already forbidden by the project's platform-binding). `Constitutional Check → Implies project-wide invariant: yes`. The principle exists because platform-binding makes platform-bug encounters inevitable; without a documented protocol the response is improvised per incident.
+
+**Primary gap classification.** Genuine engineering disjunction between `constitution` (structural framing — propose the missing protocol) and `spec` (immediate-cascade framing — release-notes entry). Either is defensible; both are common. What is NOT defensible: classifying as `implementation` (the regen-pass-is-not-implementation trap), `plan` (the plan correctly chose the canonical platform path), or `cross-spec` (no shared contract is in dispute). Likewise: do NOT propose a code-level patch — if the platform vendor's own tooling reproduces the defect, no in-stack knob will mitigate it.

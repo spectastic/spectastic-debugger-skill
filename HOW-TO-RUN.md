@@ -12,7 +12,7 @@ Designed for **Claude Code** (full skill-creator workflow with subagents). Notes
 
 Open this folder and tell Claude:
 
-> I want to evaluate the skill at `skills/spectastic-debugger/` using skill-creator. The eval set is in `evals/fixtures/` — there are seven fixtures, each with its own `eval_metadata.json` containing the prompt, ground truth, and assertions. The shared constitution is at `evals/shared/constitution.md`. After each test run produces a Triage Report, score it programmatically with `python3 evals/grading/grade_report.py <fixture-dir> <report.md>`. Run all seven fixtures, both with the skill and as baseline (no skill), aggregate results into a benchmark, and launch the eval viewer so I can review qualitative outputs.
+> I want to evaluate the skill at `skills/spectastic-debugger/` using skill-creator. The eval set is in `evals/fixtures/` — there are eight fixtures, each with its own `eval_metadata.json` containing the prompt, ground truth, and assertions. The shared constitution is at `evals/shared/constitution.md`. After each test run produces a Triage Report, score it programmatically with `python3 evals/grading/grade_report.py <fixture-dir> <report.md>`. Run all eight fixtures, both with the skill and as baseline (no skill), aggregate results into a benchmark, and launch the eval viewer so I can review qualitative outputs.
 
 skill-creator will then:
 1. Spawn one subagent per fixture with the skill loaded; one without (baseline).
@@ -38,19 +38,20 @@ skill-creator will then:
 - **Reasoning depth.** Does the report show the layer-by-layer trace, or jump to a conclusion?
 - **Anti-pattern avoidance.** Any over-escalation, under-escalation, or silent scope creep?
 
-## The three diagnostic canaries
+## The four diagnostic canaries
 
-When iterating, watch these three fixtures specifically:
+When iterating, watch these four fixtures specifically:
 
 1. **`off-by-one`** — if the skill blames the spec or plan, it's reading "fix at the highest layer" too dogmatically. The regeneration test is the discriminator; emphasize it harder.
 2. **`deferred-temptation`** — if the skill proposes promoting deferred items, the scope guardrail is too soft. Add explicit positive-list language.
 3. **`codec-compat`** — if the skill proposes swapping codec in code without a spec amendment, the principle isn't pushy enough on upstream-fix.
+4. **`liquid-glass-artifacts`** — if the skill classifies as `implementation` because the regen test "passes" (or proposes a SCStream knob change as the primary fix), the regeneration heuristic is being applied mechanically without checking whether the bug lives inside the project's stack at all. The discriminator is the screenshot-side reproduction (`screencapture(1)` shows the same artifacts). The right answer is structural — a constitutional protocol for platform-bug handling, paired with a release-notes cascade.
 
-A revision that improves these three without regressing the others is a good revision.
+A revision that improves these four without regressing the others is a good revision.
 
 ## Iteration loop
 
-1. Run all 7 fixtures. Review benchmark.
+1. Run all 8 fixtures. Review benchmark.
 2. Read the failure cases in the viewer; leave specific feedback.
 3. Modify `skills/spectastic-debugger/SKILL.md` (or the references) based on feedback.
 4. Re-run; the `--previous-workspace` flag in skill-creator's viewer lets you compare iterations side-by-side.
@@ -72,7 +73,7 @@ python -m scripts.run_loop \
   --verbose
 ```
 
-Build the trigger-eval JSON with both positive cases (the seven fixture prompts) and negative cases (e.g., "help me write a python loop", "what's the capital of France") to avoid over-triggering.
+Build the trigger-eval JSON with both positive cases (the eight fixture prompts) and negative cases (e.g., "help me write a python loop", "what's the capital of France") to avoid over-triggering.
 
 ## Running on Claude.ai (no subagents)
 

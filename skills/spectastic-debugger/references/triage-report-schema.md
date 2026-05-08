@@ -36,7 +36,7 @@ Output the report as markdown, with `## Section Name` headings exactly as listed
 ## Recommended Change
 - Layer: <spec | plan | implementation | constitution>
 - Artifact: <path>
-- Change type: <amendment | new requirement | new NFR | refactor | regression test | new principle>
+- Change type: <amendment | new requirement | new NFR | refactor | regression test | new principle | release-notes entry | external-tracker filing>
 - Proposed text / diff: <concrete proposal>
 - Rationale: <why this change, at this layer>
 

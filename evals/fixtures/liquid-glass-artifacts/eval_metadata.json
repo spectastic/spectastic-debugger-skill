@@ -1,0 +1,27 @@
+{
+  "eval_id": 7,
+  "eval_name": "liquid-glass-artifacts",
+  "prompt": "Bug in our screen recorder: when users record a take that includes UI surfaces rendered with macOS's Liquid Glass material (translucent system surfaces — Control Center, recent system menus, Sequoia+ system UI), some frames in the resulting .mov show visual artifacts: banding, blur smearing, color-tint shifts, transparency-blending oddities. The bug also reproduces in static macOS screenshots — Cmd-Shift-3, Cmd-Shift-4, and screencapture(1) from the terminal produce the same artifacts on the same UI surfaces, with no app code in the loop. A bare-minimum SCStream consumer (Apple's 'Capturing screen content' sample code, unmodified) also reproduces the same artifacts. The relevant artifacts are in this fixture folder: spec at spec.md, plan at plan.md, implementation snippet at code.md, project constitution at ../../shared/constitution.md. Please debug as a staff engineer in our SDD workflow and produce a Triage Report.",
+  "ground_truth": {
+    "primary_gap": ["constitution", "spec"],
+    "recommended_change_layer": ["constitution", "spec"],
+    "regen_test_result": "Pass",
+    "scope_exposes_deferred": "no",
+    "hotfix_needed": "no",
+    "constitutional_implies": "yes",
+    "cross_spec_contracts": "none",
+    "rationale": "The defect is upstream of the project's entire stack — reproducible via Apple's own first-party tools (screencapture(1), the Cmd-Shift-3 system shortcut, and an unmodified Apple sample-code SCStream consumer) on the same UI surfaces, with no project code in the loop. Spec, plan, and code are all internally correct: NFR-002 binds the project to Apple-native frameworks, the plan picks the canonical SCStream pattern, the code passes WindowServer's CMSampleBuffers through unchanged (TD-4 passthrough). NFR-001 is satisfied by construction; AC-2 paradoxically passes because the artifact appears identically in screencapture(1)'s output. Regenerating from the current spec+plan would NOT reproduce the bug — because the bug isn't in the project's code; it lives in WindowServer's compose-to-bitmap path. The right disposition is two-fold: (1) immediate spec-level cascade — document the limitation in release notes for the affected version and file Apple Feedback Assistant; (2) structural fix — propose a new constitutional principle establishing a protocol for platform-level defects (file FB#, document as known limitation, refuse to mask with synthetic output, refuse a non-Apple fallback because NFR-002-style platform-discipline forbids it). The constitution currently has no such protocol; that's the constitutional gap. A code hotfix is not applicable because no in-stack change can route around a WindowServer bug — multiple consumer APIs (CGWindowListCreateImage, screencapture, SCStream) all surface the same compositor defect, so no SCStream knob can mitigate it. List ground truth: primary_gap and recommended_change_layer accept either 'constitution' (the structural framing — proposing the missing protocol) or 'spec' (the immediate-cascade framing — release-notes / known-limitation entry). Both are defensible engineering disjunctions; what fails the eval is misclassifying as 'implementation' or 'plan' (code and plan are correct), or 'cross-spec' (no shared contract is in dispute), or proposing a code-only patch (no in-stack workaround exists). The case is novel — the existing five-category gap-taxonomy does not cleanly cover platform-bug-upstream-of-project, which is itself part of what makes the constitutional protocol gap salient."
+  },
+  "assertions": [
+    {"text": "Layer Classification → Primary gap is 'constitution' or 'spec' (the bug is upstream of the project's stack — neither implementation, plan, nor cross-spec is correct)."},
+    {"text": "Regeneration Test → Result is 'Pass' (paradoxically — regenerating from current spec+plan would NOT reproduce this bug because the bug isn't in the project's code)."},
+    {"text": "The diagnosis identifies the bug as upstream of the project's entire stack, citing the screenshot-side reproduction (screencapture(1), Cmd-Shift-3, and/or the bare Apple sample-code SCStream consumer) as dispositive that no in-stack config knob can mitigate it."},
+    {"text": "Constitutional Check → Implies project-wide invariant is 'yes' (a missing protocol for handling platform-level defects: file FB, document as known limitation, refuse to mask, refuse non-Apple fallback)."},
+    {"text": "Recommended Change does NOT propose a code-level patch as the primary fix (no SCStream knob change, no pixel-format toggle, no colorSpace experiment as the actionable outcome)."},
+    {"text": "Recommended Change proposes either (a) a constitutional amendment for platform-bug protocol, or (b) a release-notes / known-limitation NFR as the immediate spec-level cascade — or both as paired tracks."},
+    {"text": "Tactical vs Structural → Hotfix needed first is 'no' (no code to hotfix; the bug is upstream of every in-stack consumer)."},
+    {"text": "Scope Check → Exposes deferred functionality is 'no' (this is a platform-defect acknowledgement, not a deferred feature being silently promoted)."},
+    {"text": "Cross-Spec Impact → Shared contracts touched is 'none' (no spec contract within the project is in dispute)."},
+    {"text": "Cited requirement IDs (e.g. FREQ-001..003, NFR-001, NFR-002, TD-1..4, AC-2, AC-3) actually exist in the artifacts."}
+  ]
+}

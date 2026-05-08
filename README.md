@@ -59,7 +59,8 @@ spectastic-debugger-skill/
         ├── off-by-one/                        # implementation gap (over-escalation canary)
         ├── ui-capture-format-mismatch/        # cross-spec drift
         ├── deferred-temptation/               # scope-trap (silent scope creep canary)
-        └── hotfix-needed/                     # implementation gap requiring tactical+structural fix
+        ├── hotfix-needed/                     # implementation gap requiring tactical+structural fix
+        └── liquid-glass-artifacts/            # platform-bug upstream of project (paradoxical regen-pass)
 ```
 
 Each fixture contains:
@@ -68,7 +69,7 @@ Each fixture contains:
 - `code.md` (implementation snippet + observed failure)
 - `eval_metadata.json` (the prompt to send the agent + ground truth + assertions)
 
-## What the seven fixtures test
+## What the eight fixtures test
 
 | Fixture | Tests | Canary for |
 |---|---|---|
@@ -79,8 +80,9 @@ Each fixture contains:
 | `ui-capture-format-mismatch` | Cross-spec drift on shared contract | Patching one spec when the contract belongs upstream (shared spec section *or* constitutional principle — both legitimate) |
 | `deferred-temptation` | Scope question disguised as bug | **Silent scope creep** |
 | `hotfix-needed` | Implementation gap with production pressure | Hotfix-only without queueing structural fix |
+| `liquid-glass-artifacts` | Platform bug upstream of the project's stack — defect reproduces via Apple's own first-party tools, regen test paradoxically passes | **Mis-classifying as implementation** (regen-pass → "code typo" reflex) and **proposing in-stack workarounds** when the bug is in WindowServer; the right move is a constitutional protocol for platform-bug handling, paired with a release-notes cascade |
 
-`codec-compat` and `dst-rollover` together test both edges of the under/over-escalation line — a skill that uniformly answers "spec" gets one wrong; a skill that uniformly proposes new constitutional principles gets the other wrong. The right behavior is taxonomy-driven, asking "does this bug-class recur across features?" before reaching for the constitution. `off-by-one` and `deferred-temptation` are the other diagnostic edges.
+`codec-compat` and `dst-rollover` together test both edges of the under/over-escalation line — a skill that uniformly answers "spec" gets one wrong; a skill that uniformly proposes new constitutional principles gets the other wrong. The right behavior is taxonomy-driven, asking "does this bug-class recur across features?" before reaching for the constitution. `off-by-one` and `deferred-temptation` are the other diagnostic edges. `liquid-glass-artifacts` is the eighth diagnostic edge: a regen-test-passes case that is NOT an implementation gap because the bug is outside the project's code entirely — testing whether the skill can notice the paradox and reach for a structural protocol rather than a code patch.
 
 ## Quick start
 
@@ -88,12 +90,12 @@ See `HOW-TO-RUN.md` for the full skill-creator workflow.
 
 Short version:
 1. Open this folder in Claude Code.
-2. Invoke skill-creator with: *"Evaluate the skill at `skills/spectastic-debugger/` against the seven fixtures in `evals/fixtures/`. The eval prompts and ground truth are in each fixture's `eval_metadata.json`. Use `evals/grading/grade_report.py` to score each report programmatically."*
+2. Invoke skill-creator with: *"Evaluate the skill at `skills/spectastic-debugger/` against the eight fixtures in `evals/fixtures/`. The eval prompts and ground truth are in each fixture's `eval_metadata.json`. Use `evals/grading/grade_report.py` to score each report programmatically."*
 3. Review the eval-viewer output, leave qualitative feedback on the failure cases, iterate.
 
 ## Related principles in the constitution
 
-The shared constitution (`evals/shared/constitution.md`) defines six principles (P1–P6) the skill must respect. Some fixtures reference these principles directly; one (`codec-compat`) is a candidate for adding a new principle.
+The shared constitution (`evals/shared/constitution.md`) defines six principles (P1–P6) the skill must respect. Some fixtures reference these principles directly; two (`codec-compat`, `liquid-glass-artifacts`) are candidates for adding new principles — the first for output portability, the second for a platform-bug-handling protocol.
 
 ## Ground truth: single value vs list
 
